@@ -163,7 +163,7 @@ g1 <- ggplot(incdata2) +
   geom_line(aes(tmeasure, upr, col="cohort-based adjustment")) +
   scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, NA)) +
   scale_y_continuous("Mean latent period (days)", expand=c(0, 0), limits=c(0, NA)) +
-  scale_color_manual(values=c(2, 1)) +
+  scale_color_manual(values=c(2, "blue")) +
   ggtitle("A") +
   theme(
     panel.grid = element_blank(),
@@ -176,9 +176,9 @@ g1 <- ggplot(incdata2) +
 g2 <-ggplot(infdata2) +
   geom_hline(yintercept=1/gamma, col='gray', lwd=2) +
   geom_hline(yintercept=1/(gamma+r), col='gray', lty=2, lwd=2) +
-  geom_line(data=infdata, aes(tmeasure, cmean)) +
-  geom_line(data=infdata, aes(tmeasure, lwr)) +
-  geom_line(data=infdata, aes(tmeasure, upr)) +
+  geom_line(data=infdata, aes(tmeasure, cmean), col="blue") +
+  geom_line(data=infdata, aes(tmeasure, lwr), col="blue") +
+  geom_line(data=infdata, aes(tmeasure, upr), col="blue") +
   geom_line(aes(tmeasure, cmean), col="red") +
   geom_line(aes(tmeasure, lwr), col="red") +
   geom_line(aes(tmeasure, upr), col="red") +
@@ -194,9 +194,9 @@ g2 <-ggplot(infdata2) +
 g3 <-ggplot(gendata) +
   geom_hline(yintercept=1/gamma+1/sigma, col='gray', lwd=2) +
   geom_hline(yintercept=1/(gamma+r) + 1/(sigma+r), col='gray', lty=2, lwd=2) +
-  geom_line(aes(tmeasure, cmean)) +
-  geom_line(aes(tmeasure, lwr)) +
-  geom_line(aes(tmeasure, upr)) +
+  geom_line(aes(tmeasure, cmean), col="blue") +
+  geom_line(aes(tmeasure, lwr), col="blue") +
+  geom_line(aes(tmeasure, upr), col="blue") +
   scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, NA)) +
   scale_y_continuous("Mean generation interval (days)", expand=c(0, 0), limits=c(0, NA)) +
   ggtitle("C") +
@@ -209,9 +209,9 @@ g3 <-ggplot(gendata) +
 g4 <-ggplot(serdata) +
   geom_hline(yintercept=1/gamma+1/sigma, col='gray', lwd=2) +
   geom_hline(yintercept=1/(gamma+r) + 1/(sigma+r), col='gray', lty=2, lwd=2) +
-  geom_line(aes(tmeasure, cmean)) +
-  geom_line(aes(tmeasure, lwr)) +
-  geom_line(aes(tmeasure, upr)) +
+  geom_line(aes(tmeasure, cmean), col="blue") +
+  geom_line(aes(tmeasure, lwr), col="blue") +
+  geom_line(aes(tmeasure, upr), col="blue") +
   scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, NA)) +
   scale_y_continuous("Mean serial interval (days)", expand=c(0, 0), limits=c(0, NA)) +
   ggtitle("D") +

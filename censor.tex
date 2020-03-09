@@ -24,9 +24,7 @@
 \usepackage[pdfencoding=auto, psdextra]{hyperref}
 
 \usepackage{natbib}
-\setcitestyle{numbers} 
-\setcitestyle{square}
-\bibliographystyle{prsb}
+\bibliographystyle{chicago}
 \date{\today}
 
 \usepackage{xspace}
@@ -70,8 +68,11 @@
 
 \section{Introduction}
 
-% In December 2019, a cluster of pneumonia cases of unknown etiology was reported in China.
-% The disease, now referred to as the coronavirus disease 2019 (COVID-19), has since affected more than ??? countries.
+In December 2019, a cluster of pneumonia cases of unknown etiology was reported in China.
+The disease, now referred to as the coronavirus disease 2019 (COVID-19), has since affected more than ??? countries.
+As of XXX, more than XXX deaths have been confirmed.
+
+
 
 \textbf{Skipping introduction for now.}
 
@@ -126,7 +127,6 @@ Then, the observed delay distribution during the exponential growth phase $f_{\t
 \begin{aligned}
 f_{\tiny\textrm{exp}}(\tau|t) &\propto f(\tau) \int_{-\infty}^{t-\tau} \exp(rs) ds\\
 &\propto f(\tau) \exp(-r\tau) \\
-\label{eq:exp}
 \end{aligned}
 \end{equation}
 In other words, for fast-growing epidemics (high $r$), there will be a stronger bias to observe shorter intervals.
@@ -155,10 +155,11 @@ The serial interval has a slightly higher observed mean than the generation inte
 
 Equation~\eref{exp} suggests a straightforward way of correcting the bias -- by weighting the observed distribution by the exponential growth rate:
 \begin{equation}
+\label{eq:exp}
 f(\tau) = f_{\tiny\textrm{exp}}(\tau|t) \exp(r \tau).
 \end{equation}
 Similar forms have been suggested by other studies and applied in estimating epidemiological delay distributions;
-however, our simulations show that this naive estimator does not work very well for estimating the mean (\fref{seir2}; exponential adjustment).
+however, our simulations show that this naive approach does not work very well for estimating the mean (\fref{seir2}; exponential adjustment).
 Although the estimated mean delay is similar to the true mean, the estimates are sensitive, and their associated confidence intervals are narrow.
 Once the exponential growth phase is over, applying the exponential adjustment overestimates the mean delay.
 
@@ -169,9 +170,30 @@ Conversely, the proportion of individuals that have not completed the second eve
 This approach cannot be applied to generation or serial intervals because we don't know how many individuals each person infected (i.e., we cannot measure the degree of right-censoring).
 Nonetheless, likelihood-based methods that explicitly account for the right-censoring can be still applied to estimate the generation interval distribution.
 
-\section{Applications: COVID-19 incubation period distribution}
+\section{Applications: incubation period distribution of COVID-19}
 
+Here, we revisit the incubation period distribution estimated by \cite{backer2020incubation} and assess the degree of bias in their estimate.
+Since they relied on early traveler data who traveled from Wuhan between January 2--23, during which the epidemic was likely to have been expanding exponentially, we can expect the number of infected travelers from Wuhan to increase exponentially.
+Therefore, their estimate of the mean \emph{observed} incubation periods of 6.4 days (95\% CI: 5.6–7.7 days) is likely to have been subject to right-censoring that we described earlier.
 
+\begin{figure}[!th]
+\includegraphics[width=\textwidth]{figure_baker.pdf}
+\caption{
+\textbf{caption.}
+caption
+}
+\label{fig:baker}
+\end{figure}
+
+\fref{fig:baker}A compares the naive mean, which uses all available measurements, with the cohort-based adjusted mean (see Methods for details).
+Consistent with out simulations, the cohort-based adjusted mean generally has a higher median and wider confidence intervals (see January 13--24 in \fref{fig:baker}A).
+The medians of the cohort-based adjusted means also match the exponentially adjusted mean.
+On January 25, two estimates completely overlap because they both use all available samples.
+Since \fref{fig:baker}A compares the marginal posterior distributions of the means, it does not allow us to assess whether the cohort-based adjusted mean is higher than the naive mean -- the overlapping confidence intervals do not imply that the differences are not clear.
+
+\fref{fig:baker}B compares the relative bias of the 
+
+% For example, if the observed incubation period follows a gamma distribution with mean of 6.5 days with standard deviation of 2.6 days \citep{backer2020incubation} and the epidemic grows exponentially at rate 1 per week, the true incubation period will have a mean 7.6 days.
 
 \section{Discussion}
 
@@ -182,5 +204,7 @@ Nonetheless, likelihood-based methods that explicitly account for the right-cens
 \subsection{Stochastic simulations}
 
 See Park, Champredon, and Dushoff (2019) in bioRxiv.
+
+\bibliography{censor}
 
 \end{document}
