@@ -108,7 +108,7 @@ We note that within-individual delay distributions that depend on intervention s
 Changes in the observed mean latent period (A), infectious period (B), generation interval (C), and serial interval (D) over the course of an epidemic.
 Black solid lines represent the observed means and associated 95\% confidence intervals, which are calculated by taking all samples until the time of measurement $t$.
 Gray solid lines represent the true mean.
-Gray dashed lines represent the theoretical mean during the exponential growth phase that we calculate using Equation~\eref{exp}.
+Gray dashed lines represent the expected mean during the exponential growth phase that we calculate using Equation~\eref{exp}.
 A stochastic SEIR model was simulated using a COVID-like parameters: $\mathcal R_0 = 2.5$, $1/\sigma = 6.5\,\textrm{days}$, $1/\gamma = 8\,\textrm{days}$, $N=100000$, and $I(0)=10$.
 }
 \label{fig:seir}
@@ -143,14 +143,14 @@ Changes in the estimated mean latent period (A), infectious period (B), generati
 Black solid lines represent the estimated mean and associated 95\% confidence intervals at each time of measurement using the growth-based approach.
 Red solid lines represent the estimated mean and associated 95\% confidence intervals at each time of measurement using the cohort-based approach.
 Gray solid lines represent the true mean.
-Gray dashed lines represent the theoretical observed mean during the exponential growth phase (calculated via Equation~\eref{exp}).
+Gray dashed lines represent the expected observed mean during the exponential growth phase calculated using Equation~\eref{exp}.
 A stochastic SEIR model was simulated using the following parameters: $\mathcal R_0 = 2.5$, $1/\sigma = 6.5\,\textrm{days}$, $1/\gamma = 8\,\textrm{days}$, $N=50000$, and $I(0)=10$.
 }
 \label{fig:seir2}
 \end{figure}
 
 We compare how the observed mean latent period, infectious period, generation interval, and serial interval (assuming that the latent period is equivalent to the incubation period) change over time using an individual-based stochastic simulation of the SEIR model (\fref{seir}).
-The stochastic simulation confirms the bias: the observed mean delay during the exponential growth phase matches the theoretical mean that we calculate using Equation~\eref{exp}.
+The stochastic simulation confirms the bias: the observed mean delay during the exponential growth phase matches the expected mean that we calculate using Equation~\eref{exp}.
 The amount of bias decreases as the epidemic progresses.
 The observed mean latent and infectious periods become unbiased eventually but not until much later in the epidemic.
 
