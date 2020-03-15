@@ -9,6 +9,10 @@ current: target
 
 # Content
 
+Sources += $(wildcard *.tex)
+
+## censor.pdf: censor.tex
+
 ######################################################################
 
 ### Makestuff
@@ -24,6 +28,7 @@ makestuff/Makefile:
 
 -include makestuff/os.mk
 
+-include makestuff/texdeps.mk
 ## -include makestuff/wrapR.mk
 
 -include makestuff/git.mk

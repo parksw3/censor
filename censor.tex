@@ -40,17 +40,7 @@
 
 \newcommand{\comment}[3]{\textcolor{#1}{\textbf{[#2: }\textsl{#3}\textbf{]}}}
 \newcommand{\jd}[1]{\comment{cyan}{JD}{#1}}
-\newcommand{\dc}[1]{\comment{blue}{DC}{#1}}
-\newcommand{\hotcomment}[1]{\comment{red}{HOT}{#1}}
-
-%% \newcommand{\rev}[1]{\comment{red}{REV}{#1}}
-\newcommand{\rev}[1]{}
-
 \newcommand{\swp}[1]{\comment{magenta}{SWP}{#1}}
-\newcommand{\new}[1]{\textcolor{blue}{#1}}
-
-\newcommand{\jdnew}{\jd{NEW}}
-\newcommand{\jddel}[1]{\jd{DELETE: #1}}
 
 \begin{document}
 
@@ -72,30 +62,33 @@ In December 2019, a cluster of pneumonia cases of unknown etiology was reported 
 The disease, now referred to as the coronavirus disease 2019 (COVID-19), has since affected more than ??? countries.
 As of XXX, more than XXX deaths have been confirmed.
 
+\swp{Skipping introduction for now.}
 
+\jd{This part of intro can be short; we no longer really need to remind people what COVID19 is.}
 
-\textbf{Skipping introduction for now.}
-
-Understanding the natural history of a disease is crucial for predicting the course of an outbreak and controlling it.
-At the population level, this is often done by summarizing the time between key epidemiological events as probability distributions.
-These events can be compared within an infected individual (e.g., infection and symptom onset) or between infected individuals (e.g., symptom onsets of an infector and an infectee).
+Understanding the time delays between key epidemiological events, is a key component of statistical and modeling efforts to predict and control disease outbreaks. 
+These events can be compared within an infected individual (e.g., the incubaton period is the time between infection and symptom onset) or between infected individuals (e.g., the serial interval is the time between symptom onsets of an infector and an infectee).
 However, the estimation of these epidemiological delay distributions depends on having observed both events;
 this dependency can bias the estimates during an early growth phase of an outbreak.
 
 \section{Theoretical framework}
 
-In order to understand how the observed delay distributions between two epidemiological events vary over time, we begin by defining the epidemiological delays from a cohort perspective.
-A cohort at time $s$ consists of all infected individuals whose first epidemiological event of interest occurred at time $s$.
-For example, if we are interested in measuring the duration of symptoms, a cohort consists of all individuals who became symptomatic at the same time.
+We begin by modeling epidemiological delays from a cohort perspective.
+A ``cohort'' consists of all individuals whose first epidemiological event of interest occurred at a given time.
+For example, for the purpose of measuring the symptomatic period, cohort $s$ consists of all individuals who became symptomatic at time $s$.
 
-Cohort-based delay distributions are always subject to right-censoring.
-Since both events must occur before the time of measurement $t$ to be observed, delays that are longer than $t-s$ cannot be observed for a cohort at time $s < t$.
+\jd{Is it going to be better to define a cohort for every epidemiological event, rather than just the ones that \emph{start} an interval? I'm thinking of how useful backwards GIs have been.}
+\jd{On the other hand, I like some of the simplicities below.}
+
+Observed delay distributions are generally subject to right-censoring.
+Since events must occur before the time of measurement to be observed, delays in cohort $s$ that are longer than $t-s$ cannot be observed at time $t$.
 Therefore, the cohort delay distribution $c_s(\tau|t)$ can be expressed as a truncated distribution:
 \begin{equation}
-c_s(\tau|t) = \frac{f_s(\tau)}{F_s(t-s)},
+c_s(\tau|t) = \frac{f_s(\tau)}{F_s(t-s)},\quad \tau \leq t-s
 \end{equation}
-where $f_s(\tau)$ is the true delay distribution (which can vary across cohorts), $F_s(\tau)$ is the corresponding cumulative distribution function, and $0 \leq \tau \leq t-s$.
-While delay distributions measured within an individual (e.g., incubation period) may not vary much over the course of an epidemic, those measured between individuals vary due to changes in the susceptible population.
+where $f_s(\tau)$ is the true delay distribution (which can vary across cohorts) and $F_s(\tau)$ is the corresponding cumulative distribution function.
+
+Other biases also need to be accounted for. Delay distributions involving more than one individual typically change with disease dynamics. For example, serial intervals will be shorter when the number of susceptibles is decreasing rapidly, since there will be fewer infection opportunities as the cohort grows older.
 Within-individual delay distributions that depend on external factors (e.g., time between symptom onset and hospitalization) can also change over time.
 
 \begin{figure}[!th]
@@ -112,7 +105,7 @@ A stochastic SEIR model was simulated using a COVID-like parameters: $\mathcal R
 \end{figure}
 
 Typically, epidemiological delay distributions are estimated by using all available samples.
-Then, the observed delay distribution $f_{\tiny\textrm{obs}}(\tau|t)$, which takes into account all measured delays until time $t$, is equivalent to the average of the cohort delay distributions $c_s(\tau|t)$, weighted by the incidence of cohorts $i(s)$ and the probability that both epidemiological events of interest will occur between time $s$ and $t$:
+Then, the observed delay distribution $f_{\tiny\textrm{obs}}(\tau|t)$, which takes into account all measured delays until time $t$, is equivalent to the average of the cohort delay distributions $c_s(\tau|t)$, weighted by the size of cohorts $i(s)$ and the probability that both epidemiological events of interest will occur between time $s$ and $t$:
 \begin{equation}
 \begin{aligned}
 f_{\tiny\textrm{obs}}(\tau|t) &\propto \int_{-\infty}^{t-\tau} c_s(\tau|t) i(s) F_s(t-s) ds\\
@@ -120,8 +113,8 @@ f_{\tiny\textrm{obs}}(\tau|t) &\propto \int_{-\infty}^{t-\tau} c_s(\tau|t) i(s) 
 \end{aligned}
 \end{equation}
 
-Early in an epidemic, the incidence of infection, and therefore the incidence of cohorts, is expected to grow exponentially: $i(s) = i(0) \exp(rs)$.
-We can assume that the true delay distribution stays constant for both within- and between-individual delays during this period: $f_s(\tau) = f(\tau)$.
+Early in an epidemic, the incidence of infection, and therefore the size of cohorts, is expected to grow exponentially: $i(s) = i(0) \exp(rs)$.
+If we assume that the true delay distribution stays constant for both within- and between-individual delays during this period: $f_s(\tau) = f(\tau)$.
 Then, the observed delay distribution during the exponential growth phase $f_{\tiny\textrm{exp}}(\tau|t)$ is equivalent to the true distribution deweighted by the exponential growth rate:
 \begin{equation}
 \begin{aligned}
