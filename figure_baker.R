@@ -58,7 +58,14 @@ g1 <- ggplot(dd) +
     axis.line = element_line()
   )
 
-g2 <- ggplot(baker_cohort) + 
+baker_cohort2 <- baker_cohort %>%
+  ungroup %>%
+  mutate(
+    type=factor(type, levels=c("cohort-based adjustment", "naive"),
+                labels=c("cohort-based mean", "observed mean"))
+  )
+
+g2 <- ggplot(baker_cohort2) + 
   geom_hline(yintercept=median(expvec), col='gray', lwd=2, lty=1) +
   geom_hline(yintercept=6.4, col='gray', lwd=2, lty=2) +
   geom_point(aes(tmeasure, est, col=type, shape=type), position=position_dodge(width=0.4)) +
