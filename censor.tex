@@ -4,6 +4,15 @@
 \usepackage{graphicx}
 %\usepackage{adjustbox}
 
+%% \newcommand{\comment}{\showcomment}
+\newcommand{\comment}{\nocomment}
+
+\newcommand{\showcomment}[3]{\textcolor{#1}{\textbf{[#2: }\textsl{#3}\textbf{]}}}
+\newcommand{\nocomment}[3]{}
+
+\newcommand{\jd}[1]{\comment{cyan}{JD}{#1}}
+\newcommand{\swp}[1]{\comment{magenta}{SWP}{#1}}
+
 \newcommand{\eref}[1]{(Eq.~\ref{eq:#1})}
 \newcommand{\fref}[1]{Fig.~\ref{fig:#1}}
 \newcommand{\Fref}[1]{Fig.~\ref{fig:#1}}
@@ -37,10 +46,6 @@
 \newcommand{\RR}{\ensuremath{{\mathcal R}}}
 \newcommand{\Rhat}{\ensuremath{{\hat\RR}}}
 \newcommand{\tsub}[2]{#1_{{\textrm{\tiny #2}}}}
-
-\newcommand{\comment}[3]{\textcolor{#1}{\textbf{[#2: }\textsl{#3}\textbf{]}}}
-\newcommand{\jd}[1]{\comment{cyan}{JD}{#1}}
-\newcommand{\swp}[1]{\comment{magenta}{SWP}{#1}}
 
 \begin{document}
 
