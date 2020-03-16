@@ -58,16 +58,15 @@
 
 \section{Introduction}
 
-Understanding the time delays between key epidemiological events is a key component of statistical and modeling efforts to predict and control disease outbreaks.
+Since the emergence of the novel coronavirus disease (COVID-19), a significant amount of research has been put into estimating the associated time delays between key epidemiological events.
 These events can be compared within an infected individual or between transmission pairs.
-Since the emergence of the novel coronavirus disease (COVID-19), a significant amount of research has been put into estimating these delay distributions.
-Key distributions for understanding the spread of COVID-19 include:
+For example, key delay distributions for understanding the spread of COVID-19 include:
 \begin{enumerate}
   \item Incubation period distribution: time between infection and symptom onset \citep{backer2020incubation, li2020early, linton2020incubation, tian2020characteristics}
   \item Serial interval distribution: time between symptom onset of an infector and an infectee \citep{du2020serial, nishiura2020serial, zhao2020estimating, zhaotime}
   \item Generation interval distribution: time between infection of an infector and an infectee \citep{ganyani2020estimating}
 \end{enumerate}
-The inferred delay distributions then allow us to estimate the epidemic potential of COVID-19 and assess the effectiveness of intervention strategies.
+The inferred delay distributions have been incorporated into modeling studies to estimate the epidemic potential of COVID-19 and assess the effectiveness of intervention strategies.
 
 Measuring a delay between two epidemiological events depends on having observed both events.
 A delay between two events cannot be measured if the second event has not occurred or has not been observed yet.
@@ -144,7 +143,7 @@ Intervention strategies are also likely to introduce bias towards shorter genera
 \caption{
 \textbf{Estimated means of epidemiological delay distributions over time.}
 Changes in the estimated mean latent period (A), infectious period (B), generation interval (C), and serial interval (D) over the course of an epidemic.
-Black solid lines represent the estimated mean and associated 95\% confidence intervals at each time of measurement using the growth-based approach.
+Blue solid lines represent the estimated mean and associated 95\% confidence intervals at each time of measurement using the growth-based approach.
 Red solid lines represent the estimated mean and associated 95\% confidence intervals at each time of measurement using the cohort-based approach.
 Gray solid lines represent the true mean.
 Gray dashed lines represent the expected observed mean during the exponential growth phase calculated using Equation~\eref{exp}.
@@ -175,7 +174,7 @@ Nonetheless, likelihood-based methods that explicitly account for the right-cens
 \section{Applications: incubation period distribution of COVID-19}
 
 Here, we revisit the mean incubation period estimated by \cite{backer2020incubation} and assess the degree of potential bias in this estimate.
-The estimate is based on travelers leaving Wuhan between January 2--23, during which the epidemic was likely to have been expanding exponentially; it is reasonable to assume that the number of infected travelers was likely to have been increasing exponentially.
+The estimate is based on travelers leaving Wuhan between January 2--23, during which the epidemic was likely to have been growing exponentially; it is reasonable to assume that the number of infected travelers was likely to have been increasing exponentially as well.
 Therefore, their estimate of the mean \emph{observed} incubation periods of 6.4 days (95\% CI: 5.6–7.7 days) may be biased due to right-censoring.
 To assess the presence of bias, we apply their method to infer infection time for each traveler and compare growth- and cohort-based means with the observed means over time.
 
@@ -212,27 +211,28 @@ Overall, our results indicate that the early-outbreak estimate of the mean incub
 
 \section{Discussion}
 
-Estimating the time distributions underlying the spread of disease is crucial for predicting the course of an outbreak and controlling it.
+Understanding the time delays between key epidemiological events is a key component of statistical and modeling efforts to predict and control disease outbreaks.
 However, estimates of epidemiological delay distributions can be systematically biased during an ongoing epidemic due to right-censoring.
-Generation and serial intervals can be subject to additional bias due to susceptible depletion and are more difficult to estimate.
+Generation and serial intervals can be subject to additional biases due to susceptible depletion and therefore are more difficult to estimate.
 
-Knowing the incubation period of novel pathogens, such as COVID-19, is important for designing initial intervention strategies, including quarantine measures.
+Knowing the incubation period of novel pathogens, such as COVID-19, is important for designing screening measures and initial intervention strategies.
 For example, 14-day isolation is currently recommended for anyone who comes in close contacts with confirmed COVID-19 cases in many countries to reflect its estimated incubation period;
 nonetheless, a few studies have documented much longer incubation periods for COVID-19, ranging from 19 to 24 days \citep{bai2020presumed, guan2020clinical}.
-Our analysis suggests that early estimates of the mean incubation period may be biased;
-we recommend reassessing the effectiveness of measures that rely on this estimate.
+Given that early estimates of the mean incubation period may be biased,
+we recommend reassessing the effectiveness of measures that rely on early-outbreak estimates.
 
 We compared two approaches for correcting the right-censoring bias: growth-based approach and cohort-based approach.
 While the growth-based approach provides a simple, intuitive way of assessing the bias present in the estimate, it is unstable as it is overly sensitive to long intervals and assumes that the exponential growth rate is exactly known.
-Given that the exact period of exponential growth is difficult to determine \citep{ma2014estimating}, we recommend against using growth-based approaches.
+In practice, the exact period of exponential growth is difficult to determine \citep{ma2014estimating} and therefore, the growth-based approach may perform poorly.
+We recommend against using growth-based approaches.
 The cohort-based approach provides unbiased estimates throughout the course of an epidemic.
 In practice, using only a subset of available samples may not be ideal as it leads to less precise inference;
 we recommend using likelihood-based methods that explicitly account for right-censoring analogous to Equation~\eref{cohort}.
-Nonetheless, comparing the cohort-based means and the observed means still provides a viable way of assessing whether estimates are biased.
+Nonetheless, comparing the cohort-based means and the observed means still provides a viable way of assessing whether estimates are biased and obtaining a crude estimate of the strength of the bias.
 
-As COVID-19 continues to appear in new countries, researchers will prioritize characterizing differences in local patterns of spread.
+As COVID-19 continues to appear in new countries, many researchers have already begun characterizing the differences in local patterns of spread.
 However, the observed epidemic patterns in these locations will be subject to stronger biases than those in previously established regions, such as China or South Korea.
-We strongly suggest future research to consider \emph{all} sources of potential biases in the early-outbreak patterns of spread.
+We strongly suggest future research consider \emph{all} sources of potential biases, including right-censoring.
 
 \bibliography{censor}
 
