@@ -162,6 +162,8 @@ however, our simulations show that the growth-based approach does not work very 
 Although the estimated mean delay is consistent with true mean, the estimates are unstable and the associated confidence intervals are inappropriately narrow.
 Once the exponential growth phase is over, the assumptions of the growth-based approach no longer apply, and it becomes inconsistent.
 
+\jd{I would like to discuss this. We've talked before about throwing out that much information. How does the discarding method compare with the likelihood methods? The current text is a bit cryptic.}
+
 Alternatively, we can account for the bias by ensuring that the right-censoring does not exist in the sample:
 instead of using all samples that have been collected until the time of measurement, we can limit our samples to cohort $u < t$ such that both epidemiological events of interest have been observed for all individuals within cohorts $s < u$.
 This approach provides an unbiased estimate of the mean delay throughout the epidemic with appropriately wide confidence intervals that contain the true value (\fref{seir2});
