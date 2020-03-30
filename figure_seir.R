@@ -77,7 +77,7 @@ g1 <- ggplot(incdata) +
   geom_line(aes(tmeasure, cmean)) +
   geom_line(aes(tmeasure, lwr)) +
   geom_line(aes(tmeasure, upr)) +
-  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, NA)) +
+  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
   scale_y_continuous("Mean latent period (days)", expand=c(0, 0), limits=c(0, 1/sigma+0.5)) +
   ggtitle("A") +
   theme(
@@ -92,7 +92,7 @@ g2 <-ggplot(infdata) +
   geom_line(aes(tmeasure, cmean)) +
   geom_line(aes(tmeasure, lwr)) +
   geom_line(aes(tmeasure, upr)) +
-  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, NA)) +
+  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
   scale_y_continuous("Mean infectious period (days)", expand=c(0, 0), limits=c(0, 1/gamma+0.5)) +
   ggtitle("B") +
   theme(
@@ -103,11 +103,11 @@ g2 <-ggplot(infdata) +
 
 g3 <-ggplot(gendata) +
   geom_hline(yintercept=1/gamma+1/sigma, col='gray', lwd=2) +
-  geom_hline(yintercept=1/(gamma+r) + 1/(sigma+r),, col='gray', lwd=2, lty=2) +
+  geom_hline(yintercept=1/(gamma+r) + 1/(sigma+r), col='gray', lwd=2, lty=2) +
   geom_line(aes(tmeasure, cmean)) +
   geom_line(aes(tmeasure, lwr)) +
   geom_line(aes(tmeasure, upr)) +
-  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, NA)) +
+  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
   scale_y_continuous("Mean generation interval (days)", expand=c(0, 0), limits=c(0, 1/sigma + 1/gamma+1)) +
   ggtitle("C") +
   theme(
@@ -122,7 +122,7 @@ g4 <-ggplot(serdata) +
   geom_line(aes(tmeasure, cmean)) +
   geom_line(aes(tmeasure, lwr)) +
   geom_line(aes(tmeasure, upr)) +
-  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, NA)) +
+  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
   scale_y_continuous("Mean serial interval (days)", expand=c(0, 0), limits=c(0, 1/sigma + 1/gamma+1)) +
   ggtitle("D") +
   theme(

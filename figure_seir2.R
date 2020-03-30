@@ -32,14 +32,14 @@ incdata <- data_frame(
   keep=!is.na(tdiff),
   weight=exp(r*tdiff)
 ) %>%
-  filter(keep) %>%
+  filter(keep, tmeasure < 120) %>%
   mutate(
     sw=1:n(),
     wsum=cumsum(weight),
     csum=cumsum(tdiff*weight),
     csum2=cumsum((tdiff)^2*weight),
     cmean=csum/wsum,
-    cvar=(csum2-csum^2/wsum)/(wsum-1),
+    cvar=(csum2-csum^2/wsum)/(wsum),
     csd=sqrt(cvar),
     cse=csd/sqrt(1:n()),
     lwr=cmean-2*cse,
@@ -75,14 +75,14 @@ infdata <- data_frame(
   keep=!is.na(tdiff),
   weight=exp(r*tdiff)
 ) %>%
-  filter(keep) %>%
+  filter(keep, tmeasure < 120) %>%
   mutate(
     sw=1:n(),
     wsum=cumsum(weight),
     csum=cumsum(tdiff*weight),
     csum2=cumsum((tdiff)^2*weight),
     cmean=csum/wsum,
-    cvar=(csum2-csum^2/wsum)/(wsum-1),
+    cvar=(csum2-csum^2/wsum)/(wsum),
     csd=sqrt(cvar),
     cse=csd/sqrt(1:n()),
     lwr=cmean-2*cse,
@@ -118,14 +118,14 @@ gendata <- data_frame(
   keep=!is.na(tdiff),
   weight=exp(r*tdiff)
 ) %>%
-  filter(keep) %>%
+  filter(keep, tmeasure < 120) %>%
   mutate(
     sw=1:n(),
     wsum=cumsum(weight),
     csum=cumsum(tdiff*weight),
     csum2=cumsum((tdiff)^2*weight),
     cmean=csum/wsum,
-    cvar=(csum2-csum^2/wsum)/(wsum-1),
+    cvar=(csum2-csum^2/wsum)/(wsum),
     csd=sqrt(cvar),
     cse=csd/sqrt(1:n()),
     lwr=cmean-2*cse,
@@ -138,14 +138,14 @@ serdata <- data_frame(
   keep=!is.na(tdiff),
   weight=exp(r*tdiff)
 ) %>%
-  filter(keep) %>%
+  filter(keep, tmeasure < 120) %>%
   mutate(
     sw=1:n(),
     wsum=cumsum(weight),
     csum=cumsum(tdiff*weight),
     csum2=cumsum((tdiff)^2*weight),
     cmean=csum/wsum,
-    cvar=(csum2-csum^2/wsum)/(wsum-1),
+    cvar=(csum2-csum^2/wsum)/(wsum),
     csd=sqrt(cvar),
     cse=csd/sqrt(1:n()),
     lwr=cmean-2*cse,
@@ -155,34 +155,34 @@ serdata <- data_frame(
 g1 <- ggplot(incdata2) +
   geom_hline(yintercept=1/sigma, col='gray', lwd=2) +
   geom_hline(yintercept=1/(sigma+r), col='gray', lty=2, lwd=2) +
-  geom_line(data=incdata, aes(tmeasure, cmean, col="exponential adjustment")) +
-  geom_line(data=incdata, aes(tmeasure, lwr, col="exponential adjustment")) +
-  geom_line(data=incdata, aes(tmeasure, upr, col="exponential adjustment")) +
-  geom_line(aes(tmeasure, cmean, col="cohort-based adjustment")) +
-  geom_line(aes(tmeasure, lwr, col="cohort-based adjustment")) +
-  geom_line(aes(tmeasure, upr, col="cohort-based adjustment")) +
-  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, NA)) +
+  geom_line(data=incdata, aes(tmeasure, cmean, col="growth-based mean")) +
+  geom_line(data=incdata, aes(tmeasure, lwr, col="growth-based mean")) +
+  geom_line(data=incdata, aes(tmeasure, upr, col="growth-based mean")) +
+  geom_line(aes(tmeasure, cmean, col="cohort-based mean")) +
+  geom_line(aes(tmeasure, lwr, col="cohort-based mean")) +
+  geom_line(aes(tmeasure, upr, col="cohort-based mean")) +
+  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
   scale_y_continuous("Mean latent period (days)", expand=c(0, 0), limits=c(0, NA)) +
-  scale_color_manual(values=c(2, 1)) +
+  scale_color_manual(values=c(2, "blue")) +
   ggtitle("A") +
   theme(
     panel.grid = element_blank(),
     panel.border = element_blank(),
     axis.line = element_line(),
     legend.title = element_blank(),
-    legend.position = c(0.25,0.9)
+    legend.position = c(0.8,0.2)
   )
 
 g2 <-ggplot(infdata2) +
   geom_hline(yintercept=1/gamma, col='gray', lwd=2) +
   geom_hline(yintercept=1/(gamma+r), col='gray', lty=2, lwd=2) +
-  geom_line(data=infdata, aes(tmeasure, cmean)) +
-  geom_line(data=infdata, aes(tmeasure, lwr)) +
-  geom_line(data=infdata, aes(tmeasure, upr)) +
+  geom_line(data=infdata, aes(tmeasure, cmean), col="blue") +
+  geom_line(data=infdata, aes(tmeasure, lwr), col="blue") +
+  geom_line(data=infdata, aes(tmeasure, upr), col="blue") +
   geom_line(aes(tmeasure, cmean), col="red") +
   geom_line(aes(tmeasure, lwr), col="red") +
   geom_line(aes(tmeasure, upr), col="red") +
-  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, NA)) +
+  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
   scale_y_continuous("Mean infectious period (days)", expand=c(0, 0), limits=c(0, NA)) +
   ggtitle("B") +
   theme(
@@ -191,13 +191,13 @@ g2 <-ggplot(infdata2) +
     axis.line = element_line()
   )
 
-g3 <-ggplot(gendata) +
+g3 <- ggplot(gendata) +
   geom_hline(yintercept=1/gamma+1/sigma, col='gray', lwd=2) +
   geom_hline(yintercept=1/(gamma+r) + 1/(sigma+r), col='gray', lty=2, lwd=2) +
-  geom_line(aes(tmeasure, cmean)) +
-  geom_line(aes(tmeasure, lwr)) +
-  geom_line(aes(tmeasure, upr)) +
-  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, NA)) +
+  geom_line(aes(tmeasure, cmean), col="blue") +
+  geom_line(aes(tmeasure, lwr), col="blue") +
+  geom_line(aes(tmeasure, upr), col="blue") +
+  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
   scale_y_continuous("Mean generation interval (days)", expand=c(0, 0), limits=c(0, NA)) +
   ggtitle("C") +
   theme(
@@ -206,13 +206,13 @@ g3 <-ggplot(gendata) +
     axis.line = element_line()
   )
 
-g4 <-ggplot(serdata) +
+g4 <- ggplot(serdata) +
   geom_hline(yintercept=1/gamma+1/sigma, col='gray', lwd=2) +
   geom_hline(yintercept=1/(gamma+r) + 1/(sigma+r), col='gray', lty=2, lwd=2) +
-  geom_line(aes(tmeasure, cmean)) +
-  geom_line(aes(tmeasure, lwr)) +
-  geom_line(aes(tmeasure, upr)) +
-  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, NA)) +
+  geom_line(aes(tmeasure, cmean), col="blue") +
+  geom_line(aes(tmeasure, lwr), col="blue") +
+  geom_line(aes(tmeasure, upr), col="blue") +
+  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
   scale_y_continuous("Mean serial interval (days)", expand=c(0, 0), limits=c(0, NA)) +
   ggtitle("D") +
   theme(
