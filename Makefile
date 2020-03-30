@@ -1,14 +1,7 @@
-## This is censor
+## This is the Park censoring directory
 
 current: target
 -include target.mk
-
-######################################################################
-
-# Content
-
-vim_session:
-	bash -cl "vmt"
 
 ######################################################################
 
@@ -16,14 +9,12 @@ vim_session:
 
 Sources += Makefile
 
-## Sources += content.mk
-## include content.mk
-
 Ignore += makestuff
 msrepo = https://github.com/dushoff
 Makefile: makestuff/Makefile
+## makestuff: makestuff/Makefile
 makestuff/Makefile:
-	git clone $(msrepo)/makestuff
+	(ls ../makestuff/Makefile && /bin/ln -s ../makestuff) || git clone $(msrepo)/makestuff
 	ls $@
 
 -include makestuff/os.mk
