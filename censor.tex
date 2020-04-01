@@ -61,20 +61,23 @@
 
 \pagebreak
 
+%The key distributions for understanding the spread of COVID-19 include:
+%\begin{enumerate}
+%  \item Incubation period distribution: time between infection and symptom onset \citep{backer2020incubation, %li2020early, linton2020incubation, tian2020characteristics}
+%  \item Serial interval distribution: time between symptom onset of an infector and an infectee \citep{du2020s%erial, nishiura2020serial, zhao2020estimating}
+%  \item Generation interval distribution: time between infection of an infector and an infectee \citep{ganyani%2020estimating}
+%\end{enumerate}
+
 \section{Introduction}
 
-Since the emergence of the novel coronavirus disease (COVID-19), a significant amount of research has been put into estimating the associated time delays between epidemiological events.
+Since the emergence of the novel coronavirus disease (COVID-19), a significant amount of research has focused on estimating epidemiological parameters, particularly those related to time delays between key epidemiological events.
 These events can be compared within an infected individual or between transmission pairs.
-For example, key distributions for understanding the spread of COVID-19 include:
-\begin{enumerate}
-  \item Incubation period distribution: time between infection and symptom onset \citep{backer2020incubation, li2020early, linton2020incubation, tian2020characteristics}
-  \item Serial interval distribution: time between symptom onset of an infector and an infectee \citep{du2020serial, nishiura2020serial, zhao2020estimating}
-  \item Generation interval distribution: time between infection of an infector and an infectee \citep{ganyani2020estimating}
-\end{enumerate}
-The inferred delay distributions have been incorporated into modeling studies to estimate the epidemic potential of COVID-19 and assess the effectiveness of intervention strategies.
+Estimates of within-individual delays, such as the incubation period, allow us to determine the appropriate duration of quarantine for suspected cases.
+On the other hand, estimates of between-individual delays, such as serial (i.e., the time between symptom onset of transmission pairs) and generation (i.e., time between infection of transmission pairs) intervals, allow us to determine epidemic potential and thus the required amount of intervention.
+Therefore, biases in the estimates of the delay distributions will necessarily lead to biases in the conclusion that depends on the distribution.
 
-Measuring a delay between two epidemiological events depends on having observed both events.
-A delay between two events cannot be measured if the second event has not occurred or has not been observed yet.
+Measuring a time delay between two epidemiological events typically requires observing both events.
+A delay between two events cannot be measured if either event has not occurred or has not been observed yet.
 Here, we show that this dependency can systematically bias the estimate of a delay distribution if it is not explicitly taken into account;
 this bias applies to \emph{all} epidemiological delay distributions.
 We compare two approaches for correcting the bias and apply them to evaluate the amount of bias present in the early-outbreak estimate of the mean incubation period.
@@ -86,24 +89,29 @@ A ``cohort'' consists of all individuals whose first epidemiological event of in
 For example, for the purpose of measuring the duration of symptoms, cohort $s$ consists of all individuals who became symptomatic at time $s$.
 
 Observed delay distributions are generally subject to ``right-censoring''.
-Since events must occur before the time of measurement to be observed, delays in cohort $s$ that are longer than $t-s$ cannot be observed at time $t$.
+Since events must occur before the time of measurement to be observed, delays in cohort $s$ that are longer than $t-s$ cannot be observed at time $t$ --- 
+in our earlier example, the duration of symptoms that we observe for cohort $s$ will be always shorter than $t-s$.
 Therefore, the cohort delay distribution $c_s(\tau|t)$ can be expressed as a truncated distribution:
 \begin{equation}
 c_s(\tau|t) = \frac{f_s(\tau)}{F_s(t-s)},\quad \tau \leq t-s
 \end{equation}
-where $f_s(\tau)$ is the ``true'' delay distribution and $F_s(\tau)$ is the corresponding cumulative distribution function.
-Delay distributions involving more than one individual typically vary across cohorts with disease dynamics. For example, generation intervals will be shorter when the number of susceptibles is decreasing rapidly, since there will be fewer infection opportunities as the cohort grows older \citep{champredon2015intrinsic}.
+where $f_s(\tau)$ is the realized delay distribution for cohort $s$ (in the absence of right-censoring) and $F_s(\tau)$ is the corresponding cumulative distribution function.
+
+Realized delay distributions involving more than one individual typically vary across cohorts with disease dynamics.
+For example, realized generation intervals will be shorter when the number of susceptibles is decreasing rapidly, since there will be fewer infection opportunities as the cohort grows older \citep{champredon2015intrinsic}.
 Within-individual delay distributions that depend on external factors (e.g., time between symptom onset and hospitalization) can also change over time.
+Within-individual delay distributions that are intrinsic to the natural history of a disease (e.g., incubation period) is unlikely to vary across cohorts.
 
 \begin{figure}[!th]
 \includegraphics[width=\textwidth]{figure_seir.pdf}
 \caption{
 \textbf{Observed means of epidemiological delay distributions over time.}
-Changes in the observed mean latent period (A), infectious period (B), generation interval (C), and serial interval (D) over the course of an epidemic.
+Changes in cumlative incidence (A) and the observed mean latent period (B), infectious period (C), generation interval (D), and serial interval (E) over the course of an epidemic.
+For brevity, we assume that the incubation period is equivalent to the latent period.
 Black solid lines represent the observed means and associated 95\% confidence intervals, which are calculated by taking all samples until the time of measurement $t$.
 Gray solid lines represent the true mean.
 Gray dashed lines represent the expected mean during the exponential growth phase (see \eref{exp}).
-A stochastic SEIR model was simulated using a COVID-like parameters: $\mathcal R_0 = 2.5$, $1/\sigma = 6.5\,\textrm{days}$, $1/\gamma = 8\,\textrm{days}$, $N=100000$, and $I(0)=10$.
+A stochastic SEIR model was simulated using the following parameters: $\mathcal R_0 = 2.5$, $1/\sigma = 6.5\,\textrm{days}$, $1/\gamma = 8\,\textrm{days}$, $N=100000$, and $I(0)=10$.
 }
 \label{fig:seir}
 \end{figure}
@@ -116,32 +124,29 @@ f_{\tiny\textrm{obs}}(\tau|t) &\propto \int_{-\infty}^{t-\tau} c_s(\tau|t) i(s) 
 &= \int_{-\infty}^{t-\tau} i(s) f_s(\tau) ds
 \end{aligned}
 \end{equation}
+Therefore, the observed delay distribution at time $t$ will depend on previous changes in the size of cohorts.
 
-Early in an epidemic, the incidence of infection, and therefore the size of cohorts, is expected to grow exponentially at rate $r > 0$: $i(s) \propto \exp(rs)$.
-If cohort size is growing exponentially, we expect right censoring to be important: in other words, for fast-growing epidemics (high $r$), there will be a strong bias to observe shorter intervals.
+Early in an epidemic, the incidence of infection, and therefore the size of cohorts, is expected to grow exponentially at rate $r > 0$: $i(s) = i_0 \exp(rs)$.
+If cohort size is growing exponentially, we expect right censoring to be important: in other words, for fast-growing epidemics (high $r$), there will be a strong bias to observe shorter intervals;
+this bias applies too \emph{all} epidemiological distributions.
 This effect is shown in \fref{seir}. 
-Stochastic simulations show that observed mean latent period, infectious period, generation interval, and serial interval increase through time. 
+Stochastic simulations of a Susceptible-Exposed-Infectious-Recovered (SEIR) model show that observed mean latent period, infectious period, generation interval, and serial interval increase through time.
 Eventually, the observed mean latent and infectious periods (but not the serial interval or generation interval) become unbiased.
 
-% \jd{I took out a parenthetic comment about assumptions for the SI; it seemed out of place. We should probably introduce these intervals in the introduction.}
-
 We can estimate the bias due to exponential growth.
-Assuming that the true delay distribution stays constant during this period ($f_s(\tau) = f(\tau)$), 
-the observed delay distribution during the exponential growth phase $f_{\tiny\textrm{exp}}(\tau|t)$ is equivalent to the true distribution weighted by the inverse of the exponential growth rate \citep{britton2019estimation}:
+Assuming that the realized delay distribution stays constant across cohorts during this period ($f_s(\tau) = f(\tau)$), 
+the observed delay distribution during the exponential growth phase $f_{\tiny\textrm{exp}}(\tau|t)$ is equivalent to the realized distribution weighted by the inverse of the exponential growth rate \citep{britton2019estimation}:
 \begin{equation}
 \begin{aligned}
 f_{\tiny\textrm{exp}}(\tau|t) &\propto f(\tau) \int_{-\infty}^{t-\tau} \exp(rs) ds\\
 &\propto f(\tau) \exp(-r\tau) \\
 \end{aligned}
 \end{equation}
-These estimates are shown by the dashed grey lines in \fref{seir}: after initial transients, the observed means converge toward the expected exponential-growth values before increasing again as the epidemic no longer grows exponentially. % \jd{Should we show a time series of our simulated epidemic?}
+These estimates are shown by the dashed grey lines in \fref{seir}: after initial transients, the observed means converge toward the expected exponential-growth values before increasing again as the epidemic no longer grows exponentially.
 
-The observed mean generation and serial intervals remain biased even at the end of the epidemic because the realized generation intervals become shorter due to susceptible depletion \citep{champredon2015intrinsic}.
-The susceptible depletion effect can even occur at a finer, local scale (cf. \cite{park2019inferring})
-% \jd{Maybe move this s.\ to Discussion; not here, I think.}.
+The observed mean generation and serial intervals remain biased even at the end of the epidemic (\fref{seir}D--E) because the realized generation intervals vary across cohorts --- generation intervals become shorter as the proportion of susceptible population decreases \citep{champredon2015intrinsic}.
 The observed mean serial interval is slightly higher than the observed mean generation interval near the end of an epidemic because an infected individual with a short latent period (and shorter incubation period) is more likely infect others by transmitting faster (therefore, shorter generation interval) during the susceptible depletion phase; therefore, infectors are more likely to have shorter latent/incubation periods than their infectees.
-Intervention strategies are also likely to introduce bias towards shorter generation and serial intervals because faster transmission events (i.e., shorter generation intervals) will be more likely to evade intervention.
-% \jd{This whole \P\ is cool, but maybe a little deep. The last s.\ is also a bit terse; what effects do we expect? Similar between GI and SI, or similar to the previous s.?}
+Intervention measures are also likely to introduce bias towards shorter generation and serial intervals because they effectively reduce the mean infectious period (e.g., individuals that are quarantined or hospitalized can no longer transmit).
 
 \begin{figure}[!th]
 \includegraphics[width=\textwidth]{figure_seir2.pdf}
@@ -167,12 +172,11 @@ however, our simulations show that the growth-based approach does not work very 
 Although the estimated mean delay is consistent with true mean, the estimates are unstable and the associated confidence intervals are inappropriately narrow.
 Once the exponential growth phase is over, the assumptions of the growth-based approach no longer apply, and it becomes inconsistent.
 
-% \jd{I would like to discuss this. We've talked before about throwing out that much information. How does the discarding method compare with the likelihood methods? The current text is a bit cryptic.}
+\jd{I would like to discuss this. We've talked before about throwing out that much information. How does the discarding method compare with the likelihood methods? The current text is a bit cryptic.}
 
 Alternatively, we can account for the bias by ensuring that the right-censoring does not exist in the sample:
 instead of using all samples that have been collected until the time of measurement, we can limit our samples to cohort $u < t$ such that both epidemiological events of interest have been observed for all individuals within cohorts $s < u$.
-This approach provides an unbiased estimate of the mean delay throughout the epidemic with appropriately wide confidence intervals that contain the true value (\fref{seir2});
-conversely, the proportion of individuals that have not completed the second event within each cohort will be indicative of the amount of bias present in the estimate.
+This approach provides an unbiased estimate of the mean delay throughout the epidemic with appropriately wide confidence intervals that contain the true value (\fref{seir2}).
 This approach cannot be applied to generation or serial intervals because we don't know how many individuals each person infected exactly (and therefore we cannot evaluate whether the right-censoring exists within a cohort).
 Nonetheless, likelihood-based methods that explicitly account for the right-censoring can be still applied to estimate the generation interval distribution \citep{park2019inferring}.
 
@@ -181,7 +185,7 @@ Nonetheless, likelihood-based methods that explicitly account for the right-cens
 Here, we revisit the mean incubation period estimated by \cite{backer2020incubation} and assess the degree of potential bias in this estimate.
 The estimate is based on travelers leaving Wuhan between January 2--23, during which the epidemic was likely to have been growing exponentially; it is reasonable to assume that the number of infected travelers was likely to have been increasing exponentially as well.
 Therefore, their estimate of the mean \emph{observed} incubation periods of 6.4 days (95\% CI: 5.6–7.7 days) may be biased due to right-censoring.
-To assess the presence of bias, we apply their method to infer infection time for each traveler and compare growth- and cohort-based means with the observed means over time.
+To assess the presence of bias, we apply their method to infer the probability distribution of infection time for each traveler and compare growth- and cohort-based means with the observed means over time.
 
 \begin{figure}[!th]
 \includegraphics[width=\textwidth]{figure_baker.pdf}

@@ -71,14 +71,10 @@ serdata <- data_frame(
     upr=cmean+2*cse
   )
 
-g1 <- ggplot(incdata) +
-  geom_hline(yintercept=1/sigma, col='gray', lwd=2) +
-  geom_hline(yintercept=1/(sigma+r), col='gray', lty=2, lwd=2) +
-  geom_line(aes(tmeasure, cmean)) +
-  geom_line(aes(tmeasure, lwr)) +
-  geom_line(aes(tmeasure, upr)) +
-  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
-  scale_y_continuous("Mean latent period (days)", expand=c(0, 0), limits=c(0, 1/sigma+0.5)) +
+g1 <- ggplot(seir_sim$data) +
+  geom_line(aes(time, infected)) +
+  scale_x_continuous("Time", expand=c(0, 0), limits=c(0, 260)) +
+  scale_y_continuous("Cumulative incidence", expand=c(0, 0), limits=c(0, 89999)) +
   ggtitle("A") +
   theme(
     panel.grid = element_blank(),
@@ -86,14 +82,14 @@ g1 <- ggplot(incdata) +
     axis.line = element_line()
   )
 
-g2 <-ggplot(infdata) +
-  geom_hline(yintercept=1/gamma, col='gray', lwd=2) +
-  geom_hline(yintercept=1/(gamma+r), col='gray', lwd=2, lty=2) +
+g2 <- ggplot(incdata) +
+  geom_hline(yintercept=1/sigma, col='gray', lwd=2) +
+  geom_hline(yintercept=1/(sigma+r), col='gray', lty=2, lwd=2) +
   geom_line(aes(tmeasure, cmean)) +
   geom_line(aes(tmeasure, lwr)) +
   geom_line(aes(tmeasure, upr)) +
   scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
-  scale_y_continuous("Mean infectious period (days)", expand=c(0, 0), limits=c(0, 1/gamma+0.5)) +
+  scale_y_continuous("Mean latent period (days)", expand=c(0, 0), limits=c(0, 1/sigma+0.5)) +
   ggtitle("B") +
   theme(
     panel.grid = element_blank(),
@@ -101,14 +97,14 @@ g2 <-ggplot(infdata) +
     axis.line = element_line()
   )
 
-g3 <-ggplot(gendata) +
-  geom_hline(yintercept=1/gamma+1/sigma, col='gray', lwd=2) +
-  geom_hline(yintercept=1/(gamma+r) + 1/(sigma+r), col='gray', lwd=2, lty=2) +
+g3 <-ggplot(infdata) +
+  geom_hline(yintercept=1/gamma, col='gray', lwd=2) +
+  geom_hline(yintercept=1/(gamma+r), col='gray', lwd=2, lty=2) +
   geom_line(aes(tmeasure, cmean)) +
   geom_line(aes(tmeasure, lwr)) +
   geom_line(aes(tmeasure, upr)) +
   scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
-  scale_y_continuous("Mean generation interval (days)", expand=c(0, 0), limits=c(0, 1/sigma + 1/gamma+1)) +
+  scale_y_continuous("Mean infectious period (days)", expand=c(0, 0), limits=c(0, 1/gamma+0.5)) +
   ggtitle("C") +
   theme(
     panel.grid = element_blank(),
@@ -116,14 +112,14 @@ g3 <-ggplot(gendata) +
     axis.line = element_line()
   )
 
-g4 <-ggplot(serdata) +
+g4 <-ggplot(gendata) +
   geom_hline(yintercept=1/gamma+1/sigma, col='gray', lwd=2) +
   geom_hline(yintercept=1/(gamma+r) + 1/(sigma+r), col='gray', lwd=2, lty=2) +
   geom_line(aes(tmeasure, cmean)) +
   geom_line(aes(tmeasure, lwr)) +
   geom_line(aes(tmeasure, upr)) +
   scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
-  scale_y_continuous("Mean serial interval (days)", expand=c(0, 0), limits=c(0, 1/sigma + 1/gamma+1)) +
+  scale_y_continuous("Mean generation interval (days)", expand=c(0, 0), limits=c(0, 1/sigma + 1/gamma+1)) +
   ggtitle("D") +
   theme(
     panel.grid = element_blank(),
@@ -131,6 +127,21 @@ g4 <-ggplot(serdata) +
     axis.line = element_line()
   )
 
-gtot <- arrangeGrob(g1, g2, g3, g4, nrow=2)
+g5 <-ggplot(serdata) +
+  geom_hline(yintercept=1/gamma+1/sigma, col='gray', lwd=2) +
+  geom_hline(yintercept=1/(gamma+r) + 1/(sigma+r), col='gray', lwd=2, lty=2) +
+  geom_line(aes(tmeasure, cmean)) +
+  geom_line(aes(tmeasure, lwr)) +
+  geom_line(aes(tmeasure, upr)) +
+  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
+  scale_y_continuous("Mean serial interval (days)", expand=c(0, 0), limits=c(0, 1/sigma + 1/gamma+1)) +
+  ggtitle("E") +
+  theme(
+    panel.grid = element_blank(),
+    panel.border = element_blank(),
+    axis.line = element_line()
+  )
 
-ggsave("figure_seir.pdf", gtot, width=10, height=6)
+gtot <- arrangeGrob(g1, g2, g3, g4, g5, layout_matrix = matrix(c(1, 1, 2, 3, 4, 5), nrow=3, byrow=TRUE))
+
+ggsave("figure_seir.pdf", gtot, width=10, height=8)

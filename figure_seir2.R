@@ -161,7 +161,7 @@ g1 <- ggplot(incdata2) +
   geom_line(aes(tmeasure, cmean, col="cohort-based mean")) +
   geom_line(aes(tmeasure, lwr, col="cohort-based mean")) +
   geom_line(aes(tmeasure, upr, col="cohort-based mean")) +
-  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
+  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 124)) +
   scale_y_continuous("Mean latent period (days)", expand=c(0, 0), limits=c(0, NA)) +
   scale_color_manual(values=c(2, "blue")) +
   ggtitle("A") +
@@ -182,7 +182,7 @@ g2 <-ggplot(infdata2) +
   geom_line(aes(tmeasure, cmean), col="red") +
   geom_line(aes(tmeasure, lwr), col="red") +
   geom_line(aes(tmeasure, upr), col="red") +
-  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
+  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 124)) +
   scale_y_continuous("Mean infectious period (days)", expand=c(0, 0), limits=c(0, NA)) +
   ggtitle("B") +
   theme(
@@ -197,7 +197,7 @@ g3 <- ggplot(gendata) +
   geom_line(aes(tmeasure, cmean), col="blue") +
   geom_line(aes(tmeasure, lwr), col="blue") +
   geom_line(aes(tmeasure, upr), col="blue") +
-  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
+  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 124)) +
   scale_y_continuous("Mean generation interval (days)", expand=c(0, 0), limits=c(0, NA)) +
   ggtitle("C") +
   theme(
@@ -212,7 +212,7 @@ g4 <- ggplot(serdata) +
   geom_line(aes(tmeasure, cmean), col="blue") +
   geom_line(aes(tmeasure, lwr), col="blue") +
   geom_line(aes(tmeasure, upr), col="blue") +
-  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
+  scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 124)) +
   scale_y_continuous("Mean serial interval (days)", expand=c(0, 0), limits=c(0, NA)) +
   ggtitle("D") +
   theme(
