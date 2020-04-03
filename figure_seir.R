@@ -85,9 +85,8 @@ g1 <- ggplot(seir_sim$data) +
 g2 <- ggplot(incdata) +
   geom_hline(yintercept=1/sigma, col='gray', lwd=2) +
   geom_hline(yintercept=1/(sigma+r), col='gray', lty=2, lwd=2) +
-  geom_line(aes(tmeasure, cmean)) +
-  geom_line(aes(tmeasure, lwr)) +
-  geom_line(aes(tmeasure, upr)) +
+  geom_ribbon(aes(tmeasure, ymin=lwr, ymax=upr), col=1, fill=NA, lty=2) +
+  geom_line(aes(tmeasure, cmean), lwd=1) +
   scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
   scale_y_continuous("Mean latent period (days)", expand=c(0, 0), limits=c(0, 1/sigma+0.5)) +
   ggtitle("B") +
@@ -100,9 +99,8 @@ g2 <- ggplot(incdata) +
 g3 <-ggplot(infdata) +
   geom_hline(yintercept=1/gamma, col='gray', lwd=2) +
   geom_hline(yintercept=1/(gamma+r), col='gray', lwd=2, lty=2) +
-  geom_line(aes(tmeasure, cmean)) +
-  geom_line(aes(tmeasure, lwr)) +
-  geom_line(aes(tmeasure, upr)) +
+  geom_line(aes(tmeasure, cmean), lwd=1) +
+  geom_ribbon(aes(tmeasure, ymin=lwr, ymax=upr), col=1, fill=NA, lty=2) +
   scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
   scale_y_continuous("Mean infectious period (days)", expand=c(0, 0), limits=c(0, 1/gamma+0.5)) +
   ggtitle("C") +
@@ -115,9 +113,8 @@ g3 <-ggplot(infdata) +
 g4 <-ggplot(gendata) +
   geom_hline(yintercept=1/gamma+1/sigma, col='gray', lwd=2) +
   geom_hline(yintercept=1/(gamma+r) + 1/(sigma+r), col='gray', lwd=2, lty=2) +
-  geom_line(aes(tmeasure, cmean)) +
-  geom_line(aes(tmeasure, lwr)) +
-  geom_line(aes(tmeasure, upr)) +
+  geom_line(aes(tmeasure, cmean), lwd=1) +
+  geom_ribbon(aes(tmeasure, ymin=lwr, ymax=upr), col=1, fill=NA, lty=2) +
   scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
   scale_y_continuous("Mean generation interval (days)", expand=c(0, 0), limits=c(0, 1/sigma + 1/gamma+1)) +
   ggtitle("D") +
@@ -130,9 +127,8 @@ g4 <-ggplot(gendata) +
 g5 <-ggplot(serdata) +
   geom_hline(yintercept=1/gamma+1/sigma, col='gray', lwd=2) +
   geom_hline(yintercept=1/(gamma+r) + 1/(sigma+r), col='gray', lwd=2, lty=2) +
-  geom_line(aes(tmeasure, cmean)) +
-  geom_line(aes(tmeasure, lwr)) +
-  geom_line(aes(tmeasure, upr)) +
+  geom_line(aes(tmeasure, cmean), lwd=1) +
+  geom_ribbon(aes(tmeasure, ymin=lwr, ymax=upr), col=1, fill=NA, lty=2) +
   scale_x_continuous("Time of measurement (days)", expand=c(0, 0), limits=c(0, 260)) +
   scale_y_continuous("Mean serial interval (days)", expand=c(0, 0), limits=c(0, 1/sigma + 1/gamma+1)) +
   ggtitle("E") +

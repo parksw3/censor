@@ -61,44 +61,23 @@ transformed parameters{
 }
 
 model{
+  alphaInc ~ normal(0, 100);
+  sigmaInc ~ normal(0, 100);
+  
   // Contribution to likelihood of incubation period
   target += weibull_lpdf(tSymptomOnset -  tE  | alphaInc, sigmaInc);
-}
-
-generated quantities {
-  // likelihood for calculation of looIC
-  vector[N] log_lik;
-  for (i in 1:N) {
-    log_lik[i] = weibull_lpdf(tSymptomOnset[i] -  tE[i]  | alphaInc, sigmaInc);
-  }
 }
 ")
 
 stanfit <- sampling(model, data = input.data, 
                 init = "random",
-                warmup = 4000,
-                iter = 14000, 
-                chains = 8)
+                iter = 2000,
+                chains = 4)
 
 save("stanfit", file="stanfit.rda")
 
-# check results and convergence
-print(stanfit)
-
-# modelfit
-LL = extract_log_lik(stanfit, parameter_name = 'log_lik')
-loo(LL)
-
-# results
 alpha <- rstan::extract(stanfit)$alphaInc
 sigma <- rstan::extract(stanfit)$sigmaInc
 
 # posterior median and 95%CI of mean
 quantile(sigma*gamma(1+1/alpha), probs = c(0.025,0.5,0.975))
-
-# posterior median and 95%CI of sd
-quantile(sqrt(sigma^2*(gamma(1+2/alpha)-(gamma(1+1/alpha))^2)), probs = c(0.025,0.5,0.975))
-
-# posterior median and 95%CI of percentiles
-percentiles <- sapply(c(0.025, 0.05, 0.5, 0.95, 0.975, 0.99), function(p) quantile(qweibull(p = p, shape = alpha, scale = sigma), probs = c(0.025, 0.5, 0.975)))
-colnames(percentiles) <- c(0.025, 0.05, 0.5, 0.95, 0.975, 0.99)
