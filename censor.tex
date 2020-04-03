@@ -174,7 +174,7 @@ Although the estimated mean delay is consistent with true mean, the estimates ar
 Once the exponential growth phase is over, the assumptions of the growth-based approach no longer apply, and we overestimate the true value.
 
 Alternatively, we can account for the bias by ensuring that the right-censoring does not exist in the sample:
-instead of using all samples that have been collected until the time of measurement, we can limit our samples to cohorts $u < t$ such that both epidemiological events of interest have been observed for all individuals within cohorts $s < u$.
+instead of using all samples that have been collected until the time of measurement, we can limit our samples to cohorts $u < t$ such that both epidemiological events of interest have occurred before time $t$ for all individuals within cohorts $s < u$.
 This approach provides an unbiased estimate of the mean delay throughout the epidemic and the associated confidence intervals contain the true value (\fref{seir2}).
 In practice, this approach should be applied restrospectively by calculating the cohort-based mean across different time of measurement; we are able to apply the method at any given time to simulated data because we know when both events occurr exactly and therefore can assess whether the right-censoring is present for all cohorts at any time of measurement.
 This approach cannot be applied to generation or serial intervals because we do not know how many individuals each person infected exactly (and therefore we cannot evaluate whether the right-censoring exists within a cohort).
