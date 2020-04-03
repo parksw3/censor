@@ -94,12 +94,12 @@ Since events must occur before the time of measurement to be observed, delays in
 in our earlier example, the duration of symptoms that we observe for cohort $s$ will be always shorter than $t-s$.
 Therefore, the cohort delay distribution $c_s(\tau|t)$ can be expressed as a truncated distribution:
 \begin{equation}
-c_s(\tau|t) = \frac{f_s(\tau)}{F_s(t-s)},\quad \tau \leq t-s
+c_s(\tau|t) = \frac{f_s(\tau)}{F_s(t-s)},\quad 0 \leq \tau \leq t-s
 \label{eq:cohort}
 \end{equation}
 where $f_s(\tau)$ is the forward delay distribution for cohort $s$, which we define as the expected time distribution of between two events for cohort $s$ in the absence of right-censoring,
 and $F_s(\tau)$ is the corresponding cumulative distribution function.
-Note that $c_s(\tau|t)$ is also a conditional probability distribution of the \emph{observed} delays for cohort $s$.
+Note that $c_s(\tau|t)$ is also a conditional probability distribution of the observed delays for cohort $s$.
 
 \begin{figure}[!th]
 \includegraphics[width=\textwidth]{figure_seir.pdf}
