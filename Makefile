@@ -5,6 +5,11 @@ current: target
 
 ######################################################################
 
+Sources += censor.tex
+censor.pdf: censor.tex
+
+######################################################################
+
 ### Makestuff
 
 Sources += Makefile
@@ -19,7 +24,7 @@ makestuff/Makefile:
 
 -include makestuff/os.mk
 
-## -include makestuff/wrapR.mk
+-include makestuff/texdeps.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
