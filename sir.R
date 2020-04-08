@@ -8,14 +8,16 @@ sample2 <- function(x, size) {
   }
 }
 
-seir.full <- function(size,
-                      beta,
-                      sigma,
-                      gamma,
-                      I0,
-                      seed = NULL,
-                      imax,
-                      keep.intrinsic=FALSE){
+sir.full <- function(size,
+                     R0=2.5,
+                     meanlog=1.621,
+                     sdlog=0.418,
+                     scale=5.5,
+                     shape=4.1,
+                     I0,
+                     seed = NULL,
+                     imax,
+                     keep.intrinsic=FALSE){
   
   if (!is.null(seed)) set.seed(seed)
   
@@ -34,7 +36,7 @@ seir.full <- function(size,
   queue_v[1:I0] <- initial_infected 
   queue_t[1:I0] <- 0
   
-  t_infected <- t_infectious <- t_recovered <- rep(NA, size)
+  t_infected <- t_symptomatic <- rep(NA, size)
   t_infected[initial_infected] <- 0
   
   t_gillespie <- NULL
@@ -60,34 +62,28 @@ seir.full <- function(size,
     
     t <- queue_t[j.index]; t_gillespie <- c(t_gillespie, t)
     
-    latent <- rexp(1, sigma)
-    t_infectious[j] <- t + latent
+    incubation <- rlnorm(1, meanlog, sdlog)
+    t_symptomatic[j] <- t+incubation
     
     c_infected <- c_infected +1
     
+    ncontact <- rpois(1, R0)
+    
     n <- V[V != j]
-    if (!keep.intrinsic) n <- n[!done[n]]
     
-    rate <- length(n) * beta + gamma
-    
-    prob <- gamma/rate
-    
-    ncontact <- rnbinom(1, size=1, prob=prob)
     if (ncontact > 0) {
       queue_v <- c(queue_v, sample2(n, ncontact))
       queue_infector <- c(queue_infector, rep(j, ncontact))
     }
     
-    time_between <- rexp(ncontact+1, rate=rate)
-    c_time <- latent + cumsum(time_between)
+    generation <- rweibull(ncontact, shape, scale)
     
-    if (keep.intrinsic) intrinsic_generation[[j]] <- c_time[1:ncontact]
+    if (keep.intrinsic) intrinsic_generation[[j]] <- generation
     
     if (ncontact > 0) {
-      queue_t <- c(queue_t, t + c_time[1:ncontact])
+      queue_t <- c(queue_t, t + generation)
     }
     
-    t_recovered[j] <- t+tail(c_time,1)
     done[j] <- TRUE
     
     filter2 <- !done[queue_v]
@@ -106,8 +102,7 @@ seir.full <- function(size,
       ),
       intrinsic_generation=intrinsic_generation,
       t_infected=t_infected,
-      t_infectious=t_infectious,
-      t_recovered=t_recovered,
+      t_symptomatic=t_symptomatic,
       infected_by=infected_by
     )
   )

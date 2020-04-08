@@ -94,7 +94,7 @@ Since events must occur before the time of measurement to be observed, delays in
 in our earlier example, the duration of symptoms that we observe for cohort $s$ will be always shorter than $t-s$.
 Therefore, the cohort delay distribution $c_s(\tau|t)$ can be expressed as a truncated distribution:
 \begin{equation}
-c_s(\tau|t) = \frac{f_s(\tau)}{F_s(t-s)},\quad 0 \leq \tau \leq t-s
+c_s(\tau|t) = \frac{f_s(\tau)}{F_s(t-s)},\quad \tau \leq t-s
 \label{eq:cohort}
 \end{equation}
 where $f_s(\tau)$ is the forward delay distribution for cohort $s$, which we define as the expected time distribution of between two events for cohort $s$ in the absence of right-censoring,
@@ -116,7 +116,7 @@ A stochastic SEIR model was simulated using the following parameters: $\mathcal 
 \end{figure}
 
 Typically, epidemiological delay distributions are estimated by using \emph{all} available measured samples.
-Then, the observed delay distribution $f_{\tiny\textrm{obs}}(\tau|t)$, which takes into account all measured delays until time $t$, can be expressed as an average of the truncated cohort delay distributions $c_s(\tau|t)$, weighted by the size of cohorts $i(s)$ and the probability that both epidemiological events of interest will occur between time $s$ and $t$:
+Then, the observed delay distribution $f_{\tiny\textrm{obs}}(\tau|t)$, which takes into account all measured delays until time $t$, can be expressed as an average of the truncated cohort delay distributions $c_s(\tau|t)$, weighted by the size of cohorts $i(s)$ and the probability that both epidemiological events of interest will occur before time $t$:
 \begin{equation}
 \begin{aligned}
 f_{\tiny\textrm{obs}}(\tau|t) &\propto \int_{-\infty}^{t-\tau} c_s(\tau|t) i(s) F_s(t-s) ds\\
@@ -179,50 +179,29 @@ This approach provides an unbiased estimate of the mean delay throughout the epi
 In practice, this approach should be applied restrospectively by calculating the cohort-based mean across different time of measurement; we are able to apply the method at any given time to simulated data because we know when both events occurr exactly and therefore can assess whether the right-censoring is present for all cohorts at any time of measurement.
 This approach cannot be applied to generation or serial intervals because we do not know how many individuals each person infected exactly (and therefore we cannot evaluate whether the right-censoring exists within a cohort).
 
-Finally, we can account for right-censoring explicitly by using a likelihood-based method based on \eref{cohort} while assuming that the forward delay distribution does not vary across cohorts.
+Finally, we can account for right-censoring explicitly by using a likelihood-based method based on \eref{cohort} while assuming that the forward delay distribution does not vary across cohorts (\fref{seir2});
+here, we use a gamma distribution to model different delay distributions.
 Like cohort-based means, likelihood-based means are consistent with the true mean and the associated confindece intervals contain the true value.
-Note that the confidence intervals of the likelihood-based means are narrower than those of the cohort-based means because we are able to use all available data, thus providing more precise inference.
+Note that the confidence intervals of the likelihood-based means are narrower than those of the cohort-based means because we are able to use all available data, which allows for more precise inference.
 Our likelihood-based estimates the mean generation and serial intervals eventually underestimate the true mean as they do not account for changes in forward delay distributions across cohorts.
 
-\section{Applications: incubation period distribution of COVID-19}
+\section{Applications: serial interval distribution of COVID-19}
 
-Here, we revisit early-outbreak estimate of the mean incubation period estimated and assess the degree of bias in this estimate.
-\cite{backer2020incubation} 
-
-The estimate is based on travelers leaving Wuhan, China between January 2--23, during which the epidemic, and therefore the number of infected travelers, was likely to have been growing exponentially.
-Their estimate of the mean \emph{observed} incubation periods of 6.4 days (95\% CI: 5.6--7.7 days) is expected to be biased due to right-censoring.
-To assess the presence of bias, we apply their method to infer the probability distribution of infection time for each traveler and compare growth- and cohort-based means with the observed means over time (see Methods for details of this section).
+In this section, we revisit a recent estimate of the serial interval distribution of COVID-19 based on 468 transmission pairs (between 752 individuals) reported between January 21–February 8 in mainland China outside of Hubei Province \cite{du2020serial}.
+Given that the outbreak was still ongoing in early February \citep{wu2020characteristics}, it is likely that the effect of right-censoring is present in their estimate.
+We assess potential biases in their estimate and discuss practical issues regarding estimation of epidemiological delay distributions from real data.
 
 \begin{figure}[!th]
-\includegraphics[width=\textwidth]{figure_backer.pdf}
+\includegraphics[width=\textwidth]{serial.pdf}
 \caption{
-\textbf{Potential bias in the early-outbreak estimate of the mean incubation period.}
-(A) Comparisons of the observed mean incubation period using all available samples and the cohort-based mean incubation period.
-Gray solid line represents the growth-based mean incubation period.
-Gray dashed line represents the mean incubation period estimated by \cite{backer2020incubation}.
-(B) Relative bias of the mean observed incubation period with respect to the cohort-based mean incubation period.
-Gray solid line represents relative bias with respect to the growth-based mean incubation period.
-Gray dashed line represents the $y=0$ line.
-Relative bias is calculated as $\textrm{(observed mean incubation period)/(bias-corrected mean incubation period)} - 1$.
+\textbf{Serial interval distributions of COVID-19.}
+Caption.
 }
-\label{fig:backer}
+\label{fig:serial}
 \end{figure}
 
-\fref{backer}A compares the observed mean incubation period, which uses all available measurements, with the cohort-based mean incubation period.
-Consistent with our simulations, the cohort-based means are generally higher and have wider confidence intervals (see January 13--24 in \fref{backer}A).
-For example, on January 24, the cohort-based mean incubation period is 6.9 days (95\% CI: 6.0 -- 9.1 days), whereas the observed mean incubation period is 6.3 days (95\% CI: 5.6 days -- 7.4 days).
-The cohort-based mean also matches the growth-based mean: 7.3 days (95\% CI: 6.2 -- 9.9 days; see solid gray line in \fref{backer}A).
-On January 25, two estimates completely overlap because they both use all available samples; a sudden decrease in the cohort-based mean indicates the presence of right-censoring.
-Since \fref{backer}A compares the marginal posterior distributions of the means, it does not allow us to assess whether the naive mean is lower than the cohort-based adjusted mean -- the overlapping confidence intervals do not necessarily imply that the differences between the observed and the cohort-based means are statistically unclear \citep{dushoff2019can}.
+\fref{serial}A presents the time series of 752 symptom onset dates, which roughly resembles the epidemic curve in China.
 
-\fref{backer}B compares the relative bias of the observed means with respect to the cohort-based adjusted means.
-We find clear and consistent bias between January 14--24;
-the median estimates of the bias range from 8\% to 20\%.
-These estimates are also consistent with the amount of bias that we calculate using the growth-based means: 12\% (95\% CI: 6\%--26\%).
-% Overall, our results indicate that the early-outbreak estimate of the mean incubation period of COVID-19 by \cite{backer2020incubation} was likely to have been biased.
-We expect a similar order-of-magnitude amount of bias to apply to estimates other epidemiological delays for COVID-19 that do not explicitly account for right-censoring.
-
-% For example, if the observed incubation period follows a gamma distribution with mean of 6.5 days with standard deviation of 2.6 days \citep{backer2020incubation} and the epidemic grows exponentially at rate 1 per week, the true incubation period will have a mean 7.6 days.
 
 \section{Discussion}
 

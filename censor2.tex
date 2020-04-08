@@ -1,0 +1,179 @@
+\documentclass[12pt]{article}
+\usepackage[top=1in,left=1in, right = 1in, footskip=1in]{geometry}
+
+\usepackage{graphicx}
+%\usepackage{adjustbox}
+
+%% \newcommand{\comment}{\showcomment}
+\newcommand{\comment}{\nocomment}
+
+\newcommand{\showcomment}[3]{\textcolor{#1}{\textbf{[#2: }\textsl{#3}\textbf{]}}}
+\newcommand{\nocomment}[3]{}
+
+\newcommand{\jd}[1]{\comment{cyan}{JD}{#1}}
+\newcommand{\swp}[1]{\comment{magenta}{SWP}{#1}}
+
+\newcommand{\eref}[1]{Eq.~\ref{eq:#1}}
+\newcommand{\fref}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\Fref}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\sref}[1]{Sec.~\ref{#1}}
+\newcommand{\frange}[2]{Fig.~\ref{fig:#1}--\ref{fig:#2}}
+\newcommand{\tref}[1]{Table~\ref{tab:#1}}
+\newcommand{\tlab}[1]{\label{tab:#1}}
+\newcommand{\seminar}{SE\mbox{$^m$}I\mbox{$^n$}R}
+
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+% \usepackage{lineno}
+% \linenumbers
+
+\usepackage[pdfencoding=auto, psdextra]{hyperref}
+
+\usepackage{natbib}
+\bibliographystyle{chicago}
+\date{\today}
+
+\usepackage{xspace}
+\newcommand*{\ie}{i.e.\@\xspace}
+
+\usepackage{color}
+
+\newcommand{\Rx}[1]{\ensuremath{{\mathcal R}_{#1}}} 
+\newcommand{\Ro}{\Rx{0}}
+\newcommand{\RR}{\ensuremath{{\mathcal R}}}
+\newcommand{\Rhat}{\ensuremath{{\hat\RR}}}
+\newcommand{\tsub}[2]{#1_{{\textrm{\tiny #2}}}}
+
+\begin{document}
+
+\begin{flushleft}{
+	\Large
+	\textbf\newline{
+		Biases in early-outbreak estimates of epidemiological delay distributions: applications to estimating COVID-19 serial interval distributions
+	}
+}
+\end{flushleft}
+
+\section*{Abstract}
+
+\pagebreak
+
+\section{Introduction}
+
+Since the emergence of the novel coronavirus disease (COVID-19), a significant amount of research has focused on estimating relevant epidemiological parameters, particularly those describing time delays between key epidemiological events \citep{backer2020incubation, du2020serial, ganyani2020estimating, lauer2020incubation, li2020early, linton2020incubation, nishiura2020serial, tian2020characteristics, zhao2020estimating}.
+These events can be compared within an infected individual or between transmission pairs.
+Estimates of within-individual delays, such as the incubation period, allow us to determine the appropriate duration of quarantine for suspected cases.
+On the other hand, estimates of between-individual delays, such as serial (i.e., the time between symptom onset of transmission pairs) and generation (i.e., time between infection of transmission pairs) intervals, allow us to determine epidemic potential and thus the required amount of intervention.
+Therefore, biases in the estimates of the delay distributions will necessarily bias the conclusions that depend on the estimated distributions.
+
+A time delay between two events cannot be measured if either event has not occurred yet.
+Here, we show that this dependency can systematically bias the estimate of a delay distribution during an ongoing epidemic if it is not explicitly taken into account;
+% this bias applies to \emph{all} epidemiological delay distributions.
+% We compare two nonparametric approaches and a likelihood-based approach for correcting the bias.
+% We then apply these methods to evaluate the amount of potential bias present in the early-outbreak estimate of the mean incubation period.
+
+\section{Methods}
+
+\subsection{Forward and backward delay distributions}
+
+In order to model time delays between two epidemiological events, we begin by defining \emph{primary} and \emph{secondary} events.
+When we measure a within-individual delay, we define primary and secondary events based on their timing;
+the primary event always occurs before the secondary event.
+When we measure between-individual delays, we define primary and secondary events based on whether they occurred within an infector or an infectee, respectively;
+the primary event does not necessarily occur before the secondary event.
+
+We model time delays between a primary and a secondary event from a cohort perspective.
+A primary cohort consists of \emph{all} individuals whose primary event occurred at a given time; 
+a secondary cohort can be defined similarly based on the secondary events.
+For example, if we are interested in measuring incubation period, a primary cohort $s$ consists of all individuals who became infected at time $s$.
+Likewise, if we are interested in measuring serial interval, a primary cohort $s$ consists of all infectors who became symptomatic at time $s$.
+Then, for each primary cohort $s$, we can define the expected time distribution between primary and secondary events for primary cohort $s$.
+We refer to this distribution as the forward delay distribution and denote it as $f_s(\tau)$.
+We assume that forward delay distributions can vary across primary cohorts.
+
+Likewise, we can define a backward delay distribution $b_s(\tau)$ for a secondary cohort $s$:
+The backward delay distribution for secondary host $s$ describes the time delays between a primary and secondary host given that the secondary event occurred at time $s$.
+It follows that:
+\begin{equation}
+b_s(\tau) \propto i(s-\tau) f_{s-\tau}(\tau)
+\end{equation}
+where $i(s)$ is the size of the primary cohort $s$.
+Therefore, changes in the backward delay distribution depends on the changes in cohort size $i(s)$ (therefore incidence of infection) as well as changes in the forward delay distribution.
+This concept generalizes the work by \citep{champredon2015intrinsic} who compared forward and backward generation-interval distributions to describe the realized generation intervals from the perspective of an infector and an infectee, respectively.
+
+\subsection{Observed delay distributions}
+
+Observed delay distributions are generally subject to ``right-censoring''.
+Since both primary and secondary events must occur before the time of measurement $t$ to be observed, delays in cohort $s < t$ that are longer than $t-s$ cannot be observed at time $t$ --- 
+in our earlier example, the duration of symptoms that we observe for cohort $s$ will be always shorter than $t-s$.
+Therefore, the conditional probability distribution of the observed delays for cohort $s$ at time $t$ can be expressed as a truncated distribution:
+\begin{equation}
+c_s(\tau|t) = \frac{f_s(\tau)}{F_s(t-s)},\quad \tau \leq t-s
+\label{eq:cohort}
+\end{equation}
+where $f_s(\tau)$ is the forward delay distribution for cohort $s$,
+and $F_s(\tau)$ is the corresponding cumulative distribution function.
+
+Typically, epidemiological delay distributions are estimated by using \emph{all} available measured samples.
+Then, the observed delay distribution $f_{\tiny\textrm{obs}}(\tau|t)$ at the population-level, which takes into account all measured delays until time $t$, can be expressed as an average of the truncated cohort delay distributions $c_s(\tau|t)$, weighted by the size of each cohort $i(s)$ and the probability of observing a time delay between time $s$ and $t$ for each cohort:
+\begin{equation}
+\begin{aligned}
+f_{\tiny\textrm{obs}}(\tau|t) &\propto \int_{-\infty}^{\min(t-\tau,t)} c_s(\tau|t) i(s) F_s(t-s) ds\\
+&= \int_{-\infty}^{\min(t-\tau,t)} i(s) f_s(\tau) ds,
+\end{aligned}
+\end{equation}
+where the integral is computed up to $\min(t-\tau,t)$ because time delay $\tau$ can take negative values (but we are only measuring delays that have been observed until time $t$).
+Like backward delay distributions, observed delay distributions depend on changes in the size of cohorts $i(s)$ as well as changes in the forward delay distributions $f_s(\tau)$.
+We note that the observed delay distribution can be also defined in terms of backward delay distributions and sizes of secondary cohorts as well.
+
+Early in an epidemic, the incidence of infection, and therefore the size of cohorts, is expected to grow exponentially at rate $r > 0$: $i(s) = i_0 \exp(rs)$.
+Assuming that the forward delay distribution stays constant across cohorts during this period ($f_s(\tau) = f(\tau)$), 
+the observed delay distribution during the exponential growth phase $f_{\tiny\textrm{exp}}(\tau|t)$ is equivalent to the forward delay distribution weighted by the inverse of the exponential growth rate \citep{britton2019estimation}:
+\begin{equation}
+\begin{aligned}
+f_{\tiny\textrm{exp}}(\tau|t) &\propto f(\tau) \int_{-\infty}^{\min(t-\tau,t)} \exp(rs) ds\\
+&\propto f(\tau) \exp(-\max{0, r\tau}) \\
+\end{aligned}
+\label{eq:exp}
+\end{equation}
+Once again, negative time delays are not subject to right-censoring and therefore do not need to be weighted by them by the inverse of the exponential growth rate.
+Therefore, for fast-growing epidemics (high $r$), there will be a strong bias to observe shorter intervals.
+This bias applies to \emph{all} epidemiological distributions.
+
+\subsection{Incubation period}
+
+\subsection{Discussion}
+
+\section{Discussion}
+
+Understanding the time delays between epidemiological events is a key component of statistical and modeling efforts to predict and control infectious disease outbreaks.
+However, estimates of epidemiological delay distributions can be systematically biased during an ongoing epidemic due to right-censoring.
+Generation and serial intervals can be subject to additional biases due to susceptible depletion and therefore are more difficult to estimate.
+
+We compare two approaches for correcting the right-censoring bias: growth-based approach and cohort-based approach.
+While the growth-based approach provides a simple, intuitive way of assessing the bias present in the estimate, it is unstable as it is overly sensitive to long intervals and assumes that the exponential growth rate is exactly known.
+In practice, the exact period of exponential growth is difficult to determine \citep{ma2014estimating} and therefore, the growth-based approach may perform poorly.
+We recommend against using growth-based approaches.
+The cohort-based approach provides unbiased estimates throughout the course of an epidemic.
+In practice, using only a subset of available samples may not be ideal as it leads to less precise inference;
+we recommend using likelihood-based methods that explicitly account for right-censoring analogous to \eref{cohort}.
+Nonetheless, comparing the cohort-based means and the observed means still provides a viable way of estimating the strength of the bias in the inferred delay distribution as we demonstrated in our example.
+
+Our results indicate that the mean incubation period of COVID-19 was likely to have been underestimated during the early outbreak.
+However, there are other sources of biases that we did not consider:
+\cite{backer2020incubation} assumed that the infection time of an individual is uniformly distributed between the first and the last exposure date.
+Given that the incidence was exponentially growing in Wuhan, China during that period, the travelers would have been more likely to be infected towards the end of their exposure period.
+Their uniform prior assumption is likely to have underestimated the infection time, which, in turn, would have overestimated the incubation period.
+Therefore, the downward bias caused by right-censoring and the upward bias caused by the uniform prior may cancel out.
+Other estimates of the mean incubation period for COVID-19 that do not account for right-censoring are also likely to be biased.
+
+As of writing this paper (April, 2020), researchers are continuing to estimate epidemiological delay distributions for COVID-19 but the problem of ignoring right-censoring prevails.
+We strongly suggest considering all sources of potential biases and recalculating these distributions.
+While the amount of bias is likely to be small ($\approx$10\%--20\%), making precise inference on epidemiological parameters will allow us to assess the outlook of the pandemic more accurately.
+
+\bibliography{censor}
+
+\end{document}
