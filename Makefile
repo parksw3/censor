@@ -10,6 +10,11 @@ censor.pdf: censor.tex
 
 ######################################################################
 
+Sources += simhack.R
+simhack.Rout: simhack.R
+
+######################################################################
+
 ### Makestuff
 
 Sources += Makefile
@@ -25,6 +30,7 @@ makestuff/Makefile:
 -include makestuff/os.mk
 
 -include makestuff/texdeps.mk
+-include makestuff/wrapR.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
